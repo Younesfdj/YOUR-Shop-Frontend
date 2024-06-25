@@ -23,7 +23,7 @@ export function SiteFooter() {
           to="https://www.fullstack.so"
           className="mt-10 block text-center text-xs leading-5"
         >
-          &copy; {new Date().getFullYear()} YOUR Shop LLC. All rights reserved.
+          &copy; {new Date().getFullYear()} YOUR Shop LLC. Tout droit reservé.
         </Link>
       </div>
     </footer>

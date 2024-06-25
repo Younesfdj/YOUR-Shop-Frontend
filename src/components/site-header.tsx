@@ -17,7 +17,7 @@ export function SiteHeader() {
             name="search"
             type="search"
             autoComplete="off"
-            placeholder="Search products..."
+            placeholder="Rechercher des produits... "
             className="h-9 lg:w-[300px]"
           />
         </form>
