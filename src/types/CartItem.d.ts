@@ -4,4 +4,6 @@ declare interface CartItemI {
   ProductPrice: number;
   ProductImagePath: string;
   ProductOrderQuantity: number;
+  ProductMaxQuantity: number;
+  ProductSize: string;
 }
