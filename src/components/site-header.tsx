@@ -3,7 +3,9 @@ import { Input } from "./ui/input";
 import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MainNav } from "./main-nav";
+import useCartStore from "../store/useCartItems";
 export function SiteHeader() {
+  const { cartItems } = useCartStore();
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between space-x-4 px-6 sm:space-x-0">
@@ -25,7 +27,7 @@ export function SiteHeader() {
           <Link to="cart">
             <Button size="sm" variant="ghost">
               <ShoppingBag className="h-5 w-5" />
-              <span className="ml-2 text-sm font-bold">{}</span>
+              <span className="ml-2 text-sm font-bold">{cartItems.length}</span>
               <span className="sr-only">Cart</span>
             </Button>
           </Link>

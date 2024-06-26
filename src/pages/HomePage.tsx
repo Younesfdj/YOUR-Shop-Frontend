@@ -4,9 +4,21 @@ import { ProductFilters } from "../components/product-filters";
 import { ProductGrid } from "../components/product-grid";
 import { ProductSort } from "../components/product-sort";
 import { cn } from "../lib/utils";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function HomePage() {
-  const { products } = useProductStore();
+  const { products, addProducts } = useProductStore();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const res = await axios.get(`${BACKEND_URL}/products`);
+      addProducts(res.data);
+    };
+    getProducts();
+  });
+
   return (
     <RootLayout>
       <div>
