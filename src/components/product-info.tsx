@@ -12,7 +12,7 @@ export function ProductInfo({ product }: Props) {
   const [selectedSize, setSelectedSize] = useState(
     product.ProductSizes?.split("-")[0]
   );
-  const { addToCartItems, cartItems } = useCartStore();
+  const { addToCartItems } = useCartStore();
   const navigate = useNavigate();
   const onAddToCart = () => {
     const item = {

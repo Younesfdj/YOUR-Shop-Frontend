@@ -1,16 +1,14 @@
 import { CartItemsEmpty } from "./cart-items-empty";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-// import { useToast } from "./ui/use-toast";
 import { getSizeName } from "../lib/utils";
 import { Clock, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import useCartStore from "../store/useCartItems";
+import { ChangeEvent } from "react";
 
 export function CartItems() {
-  //   const { toast } = useToast();
-
-  const { cartItems } = useCartStore();
+  const { cartItems, removeFromCartItems, addProductQuantity } = useCartStore();
 
   if (cartItems.length === 0) return <CartItemsEmpty />;
   return (
@@ -19,7 +17,7 @@ export function CartItems() {
       className="divide-y divide-gray-200 border-y border-gray-200 dark:divide-gray-500 dark:border-gray-500"
     >
       {cartItems.map((product, productIdx) => (
-        <li key={product.ProductId} className="flex py-6 sm:py-10">
+        <li key={productIdx} className="flex py-6 sm:py-10">
           <div className="shrink-0">
             <img
               width={200}
@@ -64,12 +62,19 @@ export function CartItems() {
                   min={1}
                   max={product.ProductMaxQuantity}
                   value={product.ProductOrderQuantity}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    addProductQuantity(
+                      product.ProductId,
+                      parseInt(e.target.value)
+                    )
+                  }
                 />
                 <div className="absolute right-0 top-0">
                   <Button
                     variant="ghost"
                     type="button"
                     className="-mr-2 inline-flex p-2"
+                    onClick={() => removeFromCartItems(product)}
                   >
                     <span className="sr-only">Remove</span>
                     <X className="h-5 w-5" aria-hidden="true" />
@@ -80,7 +85,7 @@ export function CartItems() {
 
             <p className="mt-4 flex space-x-2 text-sm">
               <Clock className="h-5 w-5 shrink-0" aria-hidden="true" />
-              <span>Ships in 1 week</span>
+              <span>Livraison en 48h</span>
             </p>
           </div>
         </li>

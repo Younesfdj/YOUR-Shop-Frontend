@@ -24,7 +24,7 @@ export function SiteHeader() {
           />
         </form>
         <div className="flex items-center space-x-1">
-          <Link to="cart">
+          <Link to="/cart">
             <Button size="sm" variant="ghost">
               <ShoppingBag className="h-5 w-5" />
               <span className="ml-2 text-sm font-bold">{cartItems.length}</span>
