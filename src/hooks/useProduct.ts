@@ -9,13 +9,16 @@ export default function useProduct(id: number) {
       `${import.meta.env.VITE_BACKEND_URL}/product/${id}`
     );
 
+    if (res.status !== 200) {
+      return;
+    }
     setProduct(res.data);
     setIsLoading(false);
   };
 
   useEffect(() => {
     getProduct();
-  });
+  }, []);
 
   return { product, isLoading };
 }

@@ -17,7 +17,7 @@ export default function HomePage() {
       addProducts(res.data);
     };
     getProducts();
-  });
+  }, []);
 
   return (
     <RootLayout>

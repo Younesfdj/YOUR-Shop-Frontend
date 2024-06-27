@@ -1,10 +1,6 @@
-"use client";
-
 import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
 import { getSizeName } from "../lib/utils";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useCartStore from "../store/useCartItems";
 
@@ -16,9 +12,8 @@ export function ProductInfo({ product }: Props) {
   const [selectedSize, setSelectedSize] = useState(
     product.ProductSizes?.split("-")[0]
   );
-  const { addToCartItems } = useCartStore();
-
-  const { toast } = useToast();
+  const { addToCartItems, cartItems } = useCartStore();
+  const navigate = useNavigate();
   const onAddToCart = () => {
     const item = {
       ProductId: product.ProductId,
@@ -30,18 +25,7 @@ export function ProductInfo({ product }: Props) {
       ProductSize: selectedSize,
     };
     addToCartItems(item);
-    toast({
-      title: `${item.ProductName} (${getSizeName(selectedSize)})`,
-      description: "Product added to cart",
-      action: (
-        <Link to="/cart">
-          <Button variant="link" className="gap-x-2 whitespace-nowrap">
-            <span>Ouvrir le panier</span>
-            <ArrowRight className="h-5 w-5" />
-          </Button>
-        </Link>
-      ),
-    });
+    navigate("/cart");
   };
 
   return (
@@ -83,7 +67,7 @@ export function ProductInfo({ product }: Props) {
             onClick={onAddToCart}
             className="w-full bg-violet-600 py-6 text-base font-medium text-white hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500"
           >
-            Add to cart
+            Commander
           </Button>
         </div>
       </form>
