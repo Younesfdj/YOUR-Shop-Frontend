@@ -1,3 +1,9 @@
+declare interface ProductImageI {
+  ProductImageId: number;
+  ProductImagePath: string;
+  ProductId: number;
+}
+
 declare interface ProductI {
   ProductId: number;
   ProductName: string;
@@ -6,5 +12,6 @@ declare interface ProductI {
   ProductDesc: string;
   ProductQuantity: number;
   ProductCategoryId: number;
-  ProductImagePath: string;
+  ProductSizes: string;
+  ProductGallery: ProductImageI[] | [];
 }

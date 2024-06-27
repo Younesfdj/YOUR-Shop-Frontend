@@ -7,16 +7,17 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import useCartStore from "../store/useCartItems";
-interface ProductInfoI extends ProductI {
-  ProductImages: string[];
-  sizes: string[];
-}
+
 interface Props {
-  product: ProductInfoI;
+  product: ProductI;
 }
 
 export function ProductInfo({ product }: Props) {
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
+  console.log(product);
+
+  const [selectedSize, setSelectedSize] = useState(
+    product.ProductSizes.split("-")[0]
+  );
   const { addToCartItems } = useCartStore();
 
   const { toast } = useToast();
@@ -25,9 +26,10 @@ export function ProductInfo({ product }: Props) {
       ProductId: product.ProductId,
       ProductName: product.ProductName,
       ProductPrice: product.ProductPrice,
-      ProductImagePath: product.ProductImages[0],
+      ProductImagePath: product.ProductGallery[0]?.ProductImagePath,
       ProductOrderQuantity: 1,
-      size: selectedSize,
+      ProductMaxQuantity: product.ProductQuantity,
+      ProductSize: selectedSize,
     };
     addToCartItems(item);
     toast({
@@ -64,7 +66,7 @@ export function ProductInfo({ product }: Props) {
         <p>
           Size: <strong>{getSizeName(selectedSize)}</strong>
         </p>
-        {product.sizes.map((size) => (
+        {product.ProductSizes.split("-").map((size) => (
           <Button
             key={size}
             variant={selectedSize === size ? "default" : "outline"}

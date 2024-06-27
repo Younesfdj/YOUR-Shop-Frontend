@@ -1,11 +1,7 @@
 import { useState } from "react";
 
-interface ProductInfoI extends ProductI {
-  ProductImages: string[];
-}
-
 interface Props {
-  product: ProductInfoI;
+  product: ProductI;
 }
 
 export function ProductGallery({ product }: Props) {
@@ -15,7 +11,7 @@ export function ProductGallery({ product }: Props) {
       {/* Image Grid */}
       <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
         <ul className="grid grid-cols-4 gap-6">
-          {product.ProductImages.map((image, index) => (
+          {product.ProductGallery.map((image, index) => (
             <div
               key={index}
               onClick={() => setSelectedImage(index)}
@@ -23,7 +19,7 @@ export function ProductGallery({ product }: Props) {
             >
               <span className="absolute inset-0 overflow-hidden rounded-md">
                 <img
-                  src={image}
+                  src={image.ProductImagePath}
                   width={200}
                   height={200}
                   alt={product.ProductName}
@@ -44,7 +40,7 @@ export function ProductGallery({ product }: Props) {
       {/* Main Image */}
       <div className="aspect-h-1 aspect-w-1  w-full">
         <img
-          src={product.ProductImages[selectedImage]}
+          src={product.ProductGallery[selectedImage].ProductImagePath}
           alt={`Main ${product.ProductName} image`}
           width={600}
           height={750}
