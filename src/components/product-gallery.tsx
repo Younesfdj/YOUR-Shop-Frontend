@@ -11,7 +11,7 @@ export function ProductGallery({ product }: Props) {
       {/* Image Grid */}
       <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
         <ul className="grid grid-cols-4 gap-6">
-          {product.ProductGallery.map((image, index) => (
+          {product.ProductGallery?.map((image, index) => (
             <div
               key={index}
               onClick={() => setSelectedImage(index)}
@@ -40,7 +40,7 @@ export function ProductGallery({ product }: Props) {
       {/* Main Image */}
       <div className="aspect-h-1 aspect-w-1  w-full">
         <img
-          src={product.ProductGallery[selectedImage].ProductImagePath}
+          src={product.ProductGallery[selectedImage]?.ProductImagePath}
           alt={`Main ${product.ProductName} image`}
           width={600}
           height={750}

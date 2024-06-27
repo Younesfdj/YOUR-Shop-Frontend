@@ -13,10 +13,8 @@ interface Props {
 }
 
 export function ProductInfo({ product }: Props) {
-  console.log(product);
-
   const [selectedSize, setSelectedSize] = useState(
-    product.ProductSizes.split("-")[0]
+    product.ProductSizes?.split("-")[0]
   );
   const { addToCartItems } = useCartStore();
 
@@ -66,7 +64,7 @@ export function ProductInfo({ product }: Props) {
         <p>
           Size: <strong>{getSizeName(selectedSize)}</strong>
         </p>
-        {product.ProductSizes.split("-").map((size) => (
+        {product.ProductSizes?.split("-").map((size) => (
           <Button
             key={size}
             variant={selectedSize === size ? "default" : "outline"}
