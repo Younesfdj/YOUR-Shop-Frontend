@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { Button } from "./ui/button";
 import { BadgeDollarSign } from "lucide-react";
 import useCartStore from "../store/useCartItems";
-
+import OrderForm from "./order-form";
 export function CartSummary() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [subTotalPrice, setSubTotalPrice] = useState(0);
@@ -54,12 +53,7 @@ export function CartSummary() {
           </dd>
         </div>
       </dl>
-      <Button
-        className="w-full mt-5"
-        disabled={cartItems.length > 0 ? false : true}
-      >
-        Valider la commande
-      </Button>
+      <OrderForm />
     </section>
   );
 }

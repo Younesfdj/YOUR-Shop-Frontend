@@ -16,7 +16,7 @@ export function getSizeName(value: string) {
       return "Large";
     case "xl":
       return "X-Large";
-    case "one-size":
+    case "oneSize":
       return "One Size";
   }
 }
