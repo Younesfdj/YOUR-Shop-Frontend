@@ -14,7 +14,20 @@ const useCartStore = create<CartItemState>((set) => {
     cartItems: getStorageCartItem(),
     addToCartItems: (item) => {
       return set((state) => {
-        const neuCartItem = [...state.cartItems, item];
+        let neuCartItem;
+        const itemExist = state.cartItems.find(
+          (i) => i.ProductId === item.ProductId
+        );
+        if (itemExist) {
+          neuCartItem = state.cartItems.map((i) =>
+            i.ProductId === item.ProductId
+              ? {
+                  ...i,
+                  ProductOrderQuantity: i.ProductOrderQuantity + 1,
+                }
+              : i
+          );
+        } else neuCartItem = [...state.cartItems, item];
         updateStorageCartItem(neuCartItem);
         return { cartItems: neuCartItem };
       });
