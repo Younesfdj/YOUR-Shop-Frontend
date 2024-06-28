@@ -1,33 +1,27 @@
-"use client";
-
 import { useState, useEffect } from "react";
 
 import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { useToast } from "./ui/use-toast";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { BadgeDollarSign } from "lucide-react";
+import useCartStore from "../store/useCartItems";
 
 export function CartSummary() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [firstname, setFirstName] = useState("");
-  const [lastname, setLastName] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState(0);
-  const { toast } = useToast();
   const [totalPrice, setTotalPrice] = useState(0);
   const [subTotalPrice, setSubTotalPrice] = useState(0);
+
+  const { cartItems } = useCartStore();
+
+  const calculateTotalPrice = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += item.ProductPrice * item.ProductOrderQuantity;
+    });
+    setTotalPrice(Math.round(total * 1000) / 1000);
+    setSubTotalPrice(Math.round(total * 1000) / 1000);
+  };
+
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [cartItems]);
 
   return (
     <section
@@ -35,35 +29,36 @@ export function CartSummary() {
       className="mt-16 rounded-lg border-2 border-gray-200 bg-gray-50 px-4 py-6 shadow-md dark:border-gray-900 dark:bg-black sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
     >
       <h2 id="summary-heading" className="text-lg font-medium">
-        Order summary
+        Résumé de la commande
       </h2>
 
       <dl className="mt-6 space-y-4">
         <div className="flex items-center justify-between">
-          <dt className="text-sm">Subtotal</dt>
+          <dt className="text-sm">Prix sans livraison</dt>
           <dd className="text-sm font-medium">
             {totalPrice} {"DZD"}
           </dd>
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-600">
           <dt className="flex items-center text-sm">
-            <span>Shipping estimate</span>
+            <span className="flex gap-1">
+              Frais de livraison <BadgeDollarSign className="w-4 h-5" />
+            </span>
           </dt>
-          <dd className="text-sm font-medium">400 DZD</dd>
+          <dd className="text-sm font-medium">0 DZD</dd>
         </div>
         <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-600">
-          <dt className="text-base font-medium">Order total</dt>
+          <dt className="text-base font-medium">Prix total</dt>
           <dd className="text-base font-medium">
             {subTotalPrice} {"DZD"}
           </dd>
         </div>
       </dl>
       <Button
-        onClick={() => setIsLoading(true)}
-        className="w-full"
-        disabled={isLoading}
+        className="w-full mt-5"
+        disabled={cartItems.length > 0 ? false : true}
       >
-        Checkout
+        Valider la commande
       </Button>
     </section>
   );
