@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import errorAsset from "../../public/404.webp";
+import errorAsset from "../assets/404.webp";
 
 export default function ErrroPage() {
   return (
