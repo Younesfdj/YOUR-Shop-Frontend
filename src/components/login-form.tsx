@@ -55,7 +55,7 @@ export default function LoginForm() {
         title: "Login successful",
         description: `Welcome back, ${response.data.data.UserName}!`,
       });
-      localStorage.setItem("token", response.data.data.Token);
+      localStorage.setItem("token", response.data.token);
       navigate("/admin/dashboard");
     } catch (error: any) {
       if (

@@ -1,12 +1,9 @@
-import { useUser } from "../hooks/useUser";
 import { Toaster } from "../components/ui/toaster";
-
+import DashNav from "../components/dashb-nav";
 export default function DashboardPage() {
-  const { user } = useUser();
   return (
     <div>
-      DashboardPage
-      <h1>Welcome, {user?.UserName}!</h1>
+      <DashNav />
       <Toaster />
     </div>
   );

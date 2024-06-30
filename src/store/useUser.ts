@@ -11,10 +11,9 @@ type UserState = {
   removeUser: () => void;
 };
 
-// read from the "user" local storage
 const initState = JSON.parse(localStorage.getItem("user") || "null");
 
-const useUser = create<UserState>((set) => ({
+const useUserStore = create<UserState>((set) => ({
   user: initState,
   setUser: (user) => {
     localStorage.setItem("user", JSON.stringify(user));
@@ -26,4 +25,4 @@ const useUser = create<UserState>((set) => ({
   },
 }));
 
-export default useUser;
+export default useUserStore;
