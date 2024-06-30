@@ -73,6 +73,8 @@ export default function OrderForm() {
     },
   });
 
+  // TODO: add onSubmit function logic
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
