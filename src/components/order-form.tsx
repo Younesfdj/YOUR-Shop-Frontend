@@ -76,8 +76,6 @@ export default function OrderForm() {
     },
   });
 
-  // TODO: add onSubmit function logic
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const getTotalAmount = () => {
