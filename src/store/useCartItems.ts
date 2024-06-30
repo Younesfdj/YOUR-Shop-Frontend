@@ -6,6 +6,7 @@ interface CartItemState {
   removeFromCartItems: (item: CartItemI) => void;
   updateCartItems: (item: CartItemI, newItem: CartItemI) => void;
   addProductQuantity: (id: number, quantity: number) => void;
+  emptyCart: () => void;
 }
 
 const useCartStore = create<CartItemState>((set) => {
@@ -68,6 +69,10 @@ const useCartStore = create<CartItemState>((set) => {
           cartItems: neuCartItem,
         };
       });
+    },
+    emptyCart: () => {
+      set({ cartItems: [] });
+      updateStorageCartItem([]);
     },
   };
 });

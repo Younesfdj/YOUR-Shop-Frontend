@@ -31,7 +31,10 @@ import {
 } from "./ui/form";
 import { Label } from "./ui/label";
 import wilayas from "../data/wilayas.json";
-
+import axios from "axios";
+import { useToast } from "./ui/use-toast";
+import { Toaster } from "./ui/toaster";
+import { useState } from "react";
 const formSchema = z
   .object({
     nom: z.string().min(2, {
@@ -45,7 +48,7 @@ const formSchema = z
     }),
     wilaya: z.string(),
     commune: z.string(),
-    livraison: z.enum(["AGENCE", "DOMMICILE"]),
+    livraison: z.enum(["AGENCY", "HAND"]),
   })
   .superRefine((input, refinementContext) => {
     if (isNaN(parseInt(input.telephone))) {
@@ -59,8 +62,8 @@ const formSchema = z
   });
 
 export default function OrderForm() {
-  const { cartItems } = useCartStore();
-
+  const { cartItems, emptyCart } = useCartStore();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -69,14 +72,54 @@ export default function OrderForm() {
       telephone: "",
       wilaya: "",
       commune: "",
-      livraison: "AGENCE",
+      livraison: "AGENCY",
     },
   });
 
   // TODO: add onSubmit function logic
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const getTotalAmount = () => {
+        let total = 0;
+        cartItems.forEach((item) => {
+          total += item.ProductPrice * item.ProductOrderQuantity;
+        });
+        return Math.round(total * 1000) / 1000;
+      };
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/make-order`,
+        {
+          orderInfo: {
+            OrderPhone: values.telephone,
+            OrderWilaya: values.wilaya,
+            OrderCommune: values.commune,
+            OrderFName: values.prenom,
+            OrderLName: values.nom,
+            OrderShippingMode: values.livraison,
+            OrderAmount: getTotalAmount(),
+          },
+          orderProducts: cartItems.map((item) => ({
+            DetailProductId: item.ProductId,
+            DetailQuantity: item.ProductOrderQuantity,
+          })),
+        }
+      );
+      if (res.status === 201) {
+        emptyCart();
+        toast({
+          title: "Commande validée",
+          description: "Votre commande a été validée avec succès",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description:
+          "Une erreur s'est produite lors de la validation de la commande",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -191,11 +234,11 @@ export default function OrderForm() {
                         className="flex flex-col space-y-1"
                       >
                         <div className="flex gap-2">
-                          <RadioGroupItem value="AGENCE" />
+                          <RadioGroupItem value="AGENCY" />
                           <Label>Agence/الوكالة</Label>
                         </div>
                         <div className="flex gap-2">
-                          <RadioGroupItem value="DOMMICILE" />
+                          <RadioGroupItem value="HAND" />
                           <Label>Domicile/المنزل</Label>
                         </div>
                       </RadioGroup>
@@ -211,6 +254,7 @@ export default function OrderForm() {
           </Form>
         </DialogContent>
       </Dialog>
+      <Toaster />
     </div>
   );
 }
