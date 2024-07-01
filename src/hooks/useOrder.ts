@@ -2,7 +2,21 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useToast } from "../components/ui/use-toast";
 export const useOrder = (id: number, token: string) => {
-  const [order, setOrder] = useState({});
+  const [order, setOrder] = useState<OrderI>({
+    OrderId: 0,
+    OrderFName: "",
+    OrderLName: "",
+    OrderAmount: 0,
+    OrderPhone: "",
+    OrderWilaya: "",
+    OrderCommune: "",
+    OrderShippingMode: "",
+    OrderDate: "",
+    OrderStatus: "",
+    createdAt: "",
+    updatedAt: "",
+    OrderDetails: [],
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState(false);
   const { toast } = useToast();
@@ -17,6 +31,7 @@ export const useOrder = (id: number, token: string) => {
             },
           }
         );
+        console.log(data);
         setOrder(data);
         setLoading(false);
       } catch (error) {

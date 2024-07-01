@@ -5,7 +5,7 @@ import AdminRootLayout from "../components/admin-layout";
 import { useParams } from "react-router-dom";
 import { useOrder } from "../hooks/useOrder";
 import { Toaster } from "../components/ui/toaster";
-const emptyOrder = {
+const emptyOrder: OrderI = {
   OrderId: 0,
   OrderFName: "",
   OrderLName: "",
@@ -18,12 +18,14 @@ const emptyOrder = {
   OrderStatus: "",
   createdAt: "",
   updatedAt: "",
+  OrderDetails: [],
 };
 
 export default function OrderInfoPage() {
   const { token } = useUser();
   const id = parseInt(useParams<{ id: string }>().id as string);
   const { order, loading, error } = useOrder(id, token as string);
+  console.log(order.OrderDetails);
 
   return (
     <AdminRootLayout>
@@ -33,7 +35,13 @@ export default function OrderInfoPage() {
             {!loading && (
               <>
                 <OrderDetails Order={error ? emptyOrder : (order as OrderI)} />
-                <OrderProducts />
+                <OrderProducts
+                  OrderDetails={
+                    error
+                      ? (emptyOrder.OrderDetails as OrderDetailI[])
+                      : (order.OrderDetails as OrderDetailI[])
+                  }
+                />
               </>
             )}
           </div>

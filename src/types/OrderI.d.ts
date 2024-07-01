@@ -11,4 +11,5 @@ declare interface OrderI {
   OrderDate?: Date | string | undefined;
   createdAt?: Date | string | undefined;
   updatedAt?: Date | string | undefined;
+  OrderDetails?: OrderDetailI[];
 }

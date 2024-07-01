@@ -100,9 +100,31 @@ export default function OrderForm() {
           orderProducts: cartItems.map((item) => ({
             DetailProductId: item.ProductId,
             DetailQuantity: item.ProductOrderQuantity,
+            DetailProductName: item.ProductName,
+            DetailProductPrice: item.ProductPrice,
+            OrderSize: item.ProductSize,
           })),
         }
       );
+      console.log({
+        orderInfo: {
+          OrderPhone: values.telephone,
+          OrderWilaya: values.wilaya,
+          OrderCommune: values.commune,
+          OrderFName: values.prenom,
+          OrderLName: values.nom,
+          OrderShippingMode: values.livraison,
+          OrderAmount: getTotalAmount(),
+        },
+        orderProducts: cartItems.map((item) => ({
+          DetailProductId: item.ProductId,
+          DetailQuantity: item.ProductOrderQuantity,
+          DetailProductName: item.ProductName,
+          DetailProductPrice: item.ProductPrice,
+          OrderSize: item.ProductSize,
+        })),
+      });
+
       if (res.status === 201) {
         emptyCart();
         toast({
