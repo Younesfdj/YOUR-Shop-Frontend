@@ -9,4 +9,6 @@ declare interface OrderI {
   OrderStatus: string;
   OrderId?: number | undefined;
   OrderDate?: Date | string | undefined;
+  createdAt?: Date | string | undefined;
+  updatedAt?: Date | string | undefined;
 }
