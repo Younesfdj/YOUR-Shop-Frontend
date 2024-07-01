@@ -2,9 +2,10 @@ import { Toaster } from "../components/ui/toaster";
 import AdminRootLayout from "../components/admin-layout";
 import { DataTable } from "../components/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-import data from "../data/orders.json";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { useOrders } from "../hooks/useOrders";
+import { useNavigate } from "react-router-dom";
 const columns: ColumnDef<OrderI>[] = [
   {
     accessorKey: "OrderId",
@@ -30,6 +31,17 @@ const columns: ColumnDef<OrderI>[] = [
           Amount
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const amount: number = row.getValue("OrderAmount");
+      return (
+        <div>
+          {amount.toLocaleString("fr-FR", {
+            style: "currency",
+            currency: "DZD",
+          })}
+        </div>
       );
     },
   },
@@ -100,6 +112,12 @@ const columns: ColumnDef<OrderI>[] = [
 ];
 
 export default function DashboardPage() {
+  const { orders, loading } = useOrders();
+  const navigate = useNavigate();
+  const rowAction = (row: any) => {
+    const OrderId = row.getValue("OrderId");
+    navigate(`/admin/orders/${OrderId}`);
+  };
   return (
     <div>
       <AdminRootLayout>
@@ -108,7 +126,11 @@ export default function DashboardPage() {
             <h1 className="text-3xl font-bold">Orders</h1>
           </div>
           <div className=" w-[90%] mx-auto">
-            <DataTable columns={columns} data={data} />
+            <DataTable
+              columns={columns}
+              data={loading ? [] : orders}
+              rowAction={rowAction}
+            />
           </div>
         </div>
       </AdminRootLayout>
