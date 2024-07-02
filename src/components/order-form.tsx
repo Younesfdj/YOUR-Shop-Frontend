@@ -34,7 +34,6 @@ import wilayas from "../data/wilayas.json";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { Toaster } from "./ui/toaster";
-import { useState } from "react";
 const formSchema = z
   .object({
     nom: z.string().min(2, {

@@ -93,7 +93,7 @@ const columns: ColumnDef<OrderI>[] = [
         </div>
       );
     },
-    sortingFn: (a, b, columnId) => {
+    sortingFn: (a, b, columnId) => { // eslint-disable-line
       if (
         a.original.OrderStatus === "PENDING" &&
         b.original.OrderStatus !== "PENDING"
@@ -114,7 +114,7 @@ const columns: ColumnDef<OrderI>[] = [
 export default function DashboardPage() {
   const { orders, loading } = useOrders();
   const navigate = useNavigate();
-  const rowAction = (row: any) => {
+  const rowAction = (row: any) => { // eslint-disable-line
     const OrderId = row.getValue("OrderId");
     navigate(`/admin/orders/${OrderId}`);
   };

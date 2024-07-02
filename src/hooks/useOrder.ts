@@ -34,11 +34,10 @@ export const useOrder = (id: number, token: string) => {
         console.log(data);
         setOrder(data);
         setLoading(false);
-      } catch (error) {
+        } catch (error) { // eslint-disable-line
         setError(true);
         toast({
           title: "Error when fetching order",
-          description: error.message,
           variant: "destructive",
         });
       } finally {
@@ -47,7 +46,7 @@ export const useOrder = (id: number, token: string) => {
     };
 
     fetchOrder();
-  }, []);
+  }, []); // eslint-disable-line
 
   return { order, loading, error };
 };

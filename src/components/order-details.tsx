@@ -11,8 +11,35 @@ import {
 import { Button } from "./ui/button";
 import { useState } from "react";
 import dateFormatter from "../utils/date";
+import { useUser } from "../hooks/useUser";
+import axios from "axios";
+import { useToast } from "./ui/use-toast";
 export default function OrderDetails({ Order }: { Order: OrderI }) {
   const [status, setStatus] = useState("");
+  const { token } = useUser();
+  const { toast } = useToast();
+  const handleStatusChange = async () => {
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/order/${Order.OrderId}`,
+        { OrderStatus: status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast({
+        title: "Order status updated",
+        description: "The order status has been updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error when updating order status",
+        variant: "destructive",
+      });
+    }
+  };
   return (
     <Card>
       <CardHeader>
@@ -65,12 +92,12 @@ export default function OrderDetails({ Order }: { Order: OrderI }) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="PENDING">Pending</SelectItem>
-                  <SelectItem value="SHIPPING">Shipped</SelectItem>
+                  <SelectItem value="SHIPPING">Shipping</SelectItem>
                   <SelectItem value="DELIVERED">Delivered</SelectItem>
                   <SelectItem value="CANCELLED">Cancelled</SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleStatusChange}>
                 Change Status
               </Button>
             </div>
