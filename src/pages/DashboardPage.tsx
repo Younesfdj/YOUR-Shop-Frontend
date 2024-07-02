@@ -93,6 +93,7 @@ const columns: ColumnDef<OrderI>[] = [
         </div>
       );
     },
+    // @ts-expect-error not used variable
     sortingFn: (a, b, columnId) => { // eslint-disable-line
       if (
         a.original.OrderStatus === "PENDING" &&
