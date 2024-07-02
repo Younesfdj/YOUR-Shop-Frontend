@@ -31,10 +31,10 @@ export const useOrder = (id: number, token: string) => {
             },
           }
         );
-        console.log(data);
         setOrder(data);
         setLoading(false);
-        } catch (error) { // eslint-disable-line
+      } catch (error) {
+        // eslint-disable-line
         setError(true);
         toast({
           title: "Error when fetching order",

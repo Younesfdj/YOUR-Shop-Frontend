@@ -25,7 +25,6 @@ export default function OrderInfoPage() {
   const { token } = useUser();
   const id = parseInt(useParams<{ id: string }>().id as string);
   const { order, loading, error } = useOrder(id, token as string);
-  console.log(order.OrderDetails);
 
   return (
     <AdminRootLayout>
