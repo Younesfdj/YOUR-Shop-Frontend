@@ -66,8 +66,9 @@ export function ProductInfo({ product }: Props) {
             type="button"
             onClick={onAddToCart}
             className="w-full bg-violet-600 py-6 text-base font-medium text-white hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500"
+            disabled={product.ProductQuantity === 0}
           >
-            Commander
+            {product.ProductQuantity === 0 ? "Rupture de stock" : "Add to cart"}
           </Button>
         </div>
       </form>

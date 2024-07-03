@@ -19,15 +19,15 @@ export function ProductGrid({ products }: Props) {
     );
   }
 
-  // TODO: add the case where the product quanity is 0
-
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-3 lg:gap-x-8">
       {products.map((product) => {
+        const productOutOfStock = product.ProductQuantity === 0;
+
         return (
           <Link
             key={product.ProductId}
-            to={`/products/${product.ProductId}`}
+            to={productOutOfStock ? "#" : `/products/${product.ProductId}`}
             className="group text-sm"
           >
             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg border-2 border-gray-200 bg-gray-100 group-hover:opacity-75 dark:border-gray-800">
@@ -36,13 +36,21 @@ export function ProductGrid({ products }: Props) {
                 alt={product.ProductName}
                 width={225}
                 height={280}
-                className="h-full w-full object-cover object-center"
+                className={`h-full w-full object-cover object-center ${
+                  productOutOfStock ? "opacity-60" : ""
+                }`}
               />
             </div>
             <h3 className="mt-4 font-medium">{product.ProductName}</h3>
             <p className="mt-2 font-medium">
-              {product.ProductPrice} {"DZD"}
+              {product.ProductPrice.toLocaleString("fr-FR", {
+                style: "currency",
+                currency: "DZD",
+              })}
             </p>
+            {productOutOfStock && (
+              <p className="mt-2 text-red-500">Rupture de stock</p>
+            )}
           </Link>
         );
       })}
