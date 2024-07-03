@@ -34,6 +34,8 @@ import wilayas from "../data/wilayas.json";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { Toaster } from "./ui/toaster";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const formSchema = z
   .object({
     nom: z.string().min(2, {
@@ -62,7 +64,9 @@ const formSchema = z
 
 export default function OrderForm() {
   const { cartItems, emptyCart } = useCartStore();
+  const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,6 +80,7 @@ export default function OrderForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setSubmitted(true);
     try {
       const getTotalAmount = () => {
         let total = 0;
@@ -84,6 +89,7 @@ export default function OrderForm() {
         });
         return Math.round(total * 1000) / 1000;
       };
+
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/make-order`,
         {
@@ -105,7 +111,6 @@ export default function OrderForm() {
           })),
         }
       );
-
       if (res.status === 201) {
         emptyCart();
         toast({
@@ -113,6 +118,9 @@ export default function OrderForm() {
           description: "Votre commande a été validée avec succès",
         });
       }
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (error) {
       toast({
         title: "Erreur",
@@ -248,7 +256,11 @@ export default function OrderForm() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-green-600">
+              <Button
+                type="submit"
+                className="w-full bg-green-600"
+                disabled={submitted}
+              >
                 Valider la commande
               </Button>
             </form>
